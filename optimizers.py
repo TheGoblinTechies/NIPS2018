@@ -9,7 +9,6 @@ from __future__ import print_function
 import numpy as np
 
 from keras import backend as K
-from keras.utils.generic_utils import get_from_module
 
 from keras.optimizers import Optimizer
 
@@ -71,7 +70,7 @@ class Adam(Optimizer):
 
         self.epsilon = epsilon
 
-    def get_updates(self, params, constraints, loss):
+    def get_updates(self, params, loss):
         grads = self.get_gradients(loss, params)
         self.updates = [K.update_add(self.iterations, 1)]
 
@@ -112,10 +111,12 @@ class Adam(Optimizer):
             self.updates.append(K.update(m, m_t))
             self.updates.append(K.update(v, v_t))
             new_p = p_t
-            # apply constraints
+            # apply raints
+            '''
             if p in constraints:
                 c = constraints[p]
                 new_p = c(new_p)
+            '''
             self.updates.append(K.update(p, new_p))
 
         return self.updates
